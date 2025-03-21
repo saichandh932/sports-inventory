@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .navbar {
+            width: 100%;
+            background-color: #0277bd;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .navbar a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            background-color: #01579b;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 50%;
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #0277bd;
+            color: white;
+        }
+        .btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+        .approve {
+            background-color: #4CAF50;
+        }
+        .deny {
+            background-color: #D32F2F;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="Dash.html">Dash board</a>
+        <a href="index.html">Home</a>
+        <a href="STUDENT FORM.html">Student Page</a>
+        <a href="EQUIPMENT.HTML">Equipment Page</a>
+        <a href="Fac.html">Faculty Page</a>
+        <a href="return page.html">Return Equipment Page</a>
+    </div>
+    
+    <div class="container">
+        <h2>Faculty Verification</h2>
+        <label for="facultyId">Faculty ID:</label>
+        <input type="text" id="facultyId" placeholder="Enter Faculty ID">
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter Password">
+        <button class="btn approve" onclick="verifyFaculty()">Login</button>
+    </div>
+
+    <div class="container" id="allotmentSection" style="display: none;">
+        <h2>Allot Equipment</h2>
+        <table>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Equipment Taken</th>
+                <th>Date & Time</th>
+                <th>Action</th>
+            </tr>
+            <tbody id="equipmentList"></tbody>
+        </table>
+    </div>
+
+    <div class="container" id="allottedSection">
+        <h2>Allotted Equipment</h2>
+        <table>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Equipment Taken</th>
+                <th>Date & Time</th>
+                <th>Faculty Name</th>
+            </tr>
+            <tbody id="allottedList"></tbody>
+        </table>
+    </div>
+    
+    <script>
+        let facultyDatabase = {
+            "FAC001": "password123",
+            "FAC002": "admin456"
+        };
+
+        function verifyFaculty() {
+            let facultyId = document.getElementById("facultyId").value;
+            let password = document.getElementById("password").value;
+
+            if (facultyDatabase[facultyId] && facultyDatabase[facultyId] === password) {
+                document.getElementById("allotmentSection").style.display = "block";
+                loadEquipmentRequests();
+            } else {
+                alert("Invalid Faculty Credentials");
+            }
+        }
+
+        function loadEquipmentRequests() {
+            let storedRequests = JSON.parse(localStorage.getItem("requestedEquipment")) || [];
+            let studentId = localStorage.getItem("studentId") || "Unknown";
+            let studentName = localStorage.getItem("studentName") || "Unknown";
+            let tableBody = document.getElementById("equipmentList");
+            tableBody.innerHTML = "";
+
+            let dateTime = new Date().toLocaleString();
+
+            storedRequests.forEach(item => {
+                let row = `<tr>
+                    <td>${studentId}</td>
+                    <td>${studentName}</td>
+                    <td>${item}</td>
+                    <td>${dateTime}</td>
+                    <td>
+                        <button class='btn approve' onclick='allotEquipment("${item}")'>Allot</button>
+                        <button class='btn deny' onclick='denyEquipment("${item}")'>Deny</button>
+                    </td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function allotEquipment(equipment) {
+            let facultyName = document.getElementById("facultyId").value;
+            let studentId = localStorage.getItem("studentId") || "Unknown";
+            let studentName = localStorage.getItem("studentName") || "Unknown";
+            let dateTime = new Date().toLocaleString();
+
+            let allottedList = document.getElementById("allottedList");
+            let row = `<tr>
+                <td>${studentId}</td>
+                <td>${studentName}</td>
+                <td>${equipment}</td>
+                <td>${dateTime}</td>
+                <td>${facultyName}</td>
+            </tr>`;
+            allottedList.innerHTML += row;
+
+            updateEquipmentCount(equipment);
+            removeRequest(equipment);
+
+            alert(`Equipment '${equipment}' has been allotted.`);
+        }
+
+        function denyEquipment(equipment) {
+            removeRequest(equipment);
+            alert(`Equipment '${equipment}' request denied.`);
+        }
+
+        function updateEquipmentCount(equipment) {
+            let equipmentCounts = JSON.parse(localStorage.getItem("equipmentCounts")) || {};
+            if (equipmentCounts[equipment]) {
+                equipmentCounts[equipment] -= 1;
+            }
+            localStorage.setItem("equipmentCounts", JSON.stringify(equipmentCounts));
+        }
+
+        function removeRequest(equipment) {
+            let storedRequests = JSON.parse(localStorage.getItem("requestedEquipment")) || [];
+            let updatedRequests = storedRequests.filter(item => item !== equipment);
+            localStorage.setItem("requestedEquipment", JSON.stringify(updatedRequests));
+            loadEquipmentRequests();
+        }
+
+        window.onload = function () {
+            let studentId = localStorage.getItem("studentId");
+            let studentName = localStorage.getItem("studentName");
+            if (!studentId || !studentName) {
+                localStorage.setItem("studentId", "***********");
+                localStorage.setItem("studentName", "***********");
+            }
+        };
+    </script>
+    <div class="footer">
+        &copy; All Rights reserved by Vignan university
+    </div>
+</body>
+</html>

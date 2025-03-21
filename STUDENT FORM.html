@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .navbar {
+            width: 100%;
+            background-color: #0277bd;
+            overflow: hidden;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .navbar a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            background-color: #01579b;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 50%;
+            margin-top: 30px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .next-btn {
+            background-color: #0277bd;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+            margin-top: 15px;
+        }
+        .next-btn:hover {
+            background-color: #01579b;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="Dash.html">Dash board</a>
+        <a href="index.html">Home</a>
+        <a href="STUDENT FORM.html">Student Page</a>
+        <a href="EQUIPMENT.HTML">Equipment Page</a>
+        <a href="Fac.html">Faculty Page</a>
+        <a href="return page.html">Return Equipment Page</a>
+    </div>
+    
+    <div class="container">
+        <h2>Student Registration</h2>
+        <label for="regNo">Registration Number:</label>
+        <input type="text" id="regNo" placeholder="Enter your registration number" oninput="fetchStudentDetails()">
+        
+        <div id="studentDetails" style="display: none;">
+            <label>Name:</label>
+            <input type="text" id="name" readonly>
+            <label>Branch:</label>
+            <input type="text" id="branch" readonly>
+            <label>Year:</label>
+            <input type="text" id="year" readonly>
+            <label>Section:</label>
+            <input type="text" id="section" readonly>
+        </div>
+        
+        <button class="next-btn" id="nextBtn" onclick="goToNextPage()">Next</button>
+    </div>
+    
+    <script>
+        function fetchStudentDetails() {
+            let regNo = document.getElementById("regNo").value;
+            let detailsDiv = document.getElementById("studentDetails");
+            let nextBtn = document.getElementById("nextBtn");
+            
+            if (regNo.length >= 10) { // Simulating a condition to fetch data
+                document.getElementById("name").value = "Pathuri Sai Chandh";
+                document.getElementById("branch").value = "Computer Science";
+                document.getElementById("year").value = "2nd";
+                document.getElementById("section").value = "2k";
+                
+                detailsDiv.style.display = "block";
+                nextBtn.style.display = "block";
+                localStorage.setItem("studentID","231FA04672");
+                localStorage.setItem("studentName", "Pathuri Sai Chandh");
+            } else {
+                detailsDiv.style.display = "none";
+                nextBtn.style.display = "none";
+            }
+        }
+        
+        function goToNextPage() {
+            window.location.href = "EQUIPMENT.HTML";
+        }
+    </script>
+</body>
+</html>

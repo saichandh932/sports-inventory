@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Return Equipment Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .navbar {
+            width: 100%;
+            background-color: #0277bd;
+            overflow: hidden;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .navbar a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            background-color: #01579b;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 70%;
+            margin-top: 30px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #0277bd;
+            color: white;
+        }
+        .return-btn {
+            background-color: #0277bd;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .return-btn:hover {
+            background-color: #01579b;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="Dash.html">Dash board</a>
+        <a href="index.html">Home</a>
+        <a href="STUDENT FORM.html">Student Page</a>
+        <a href="EQUIPMENT.HTML">Equipment Page</a>
+        <a href="Fac.html">Faculty Page</a>
+        <a href="return page.html">Return Equipment Page</a>
+    </div>
+    
+    <div class="container">
+        <h2>Return Equipment</h2>
+        
+        <h3>Enter Registration Number</h3>
+        <input type="text" id="regInput" placeholder="Enter Registration No">
+        <button onclick="verifyStudent()">Verify</button>
+
+        <div id="studentDetails" style="display: none;">
+            <h3>Student Details</h3>
+            <table>
+                <tr><th>Registration Number</th><td id="regNo"></td></tr>
+                <tr><th>Name</th><td id="studentName"></td></tr>
+                <tr><th>Branch</th><td id="branch"></td></tr>
+                <tr><th>Year</th><td id="year"></td></tr>
+                <tr><th>Section</th><td id="section"></td></tr>
+                <tr><th>Issued Equipment</th><td id="issuedItems"></td></tr>
+            </table>
+        </div>
+        
+        <div id="facultyAuth" style="display: none;">
+            <h3>Faculty Authentication</h3>
+            <input type="text" id="facultyIdInput" placeholder="Enter Faculty ID">
+            <input type="password" id="facultyPassInput" placeholder="Enter Password">
+            <button onclick="verifyFaculty()">Verify Faculty</button>
+        </div>
+
+        <div id="facultyDetails" style="display: none;">
+            <h3>Faculty Details (Authorized By)</h3>
+            <table>
+                <tr><th>Faculty ID</th><td id="facultyId"></td></tr>
+                <tr><th>Faculty Name</th><td id="facultyName"></td></tr>
+            </table>
+        </div>
+
+        <div id="issuedEquipmentSection" style="display: none;">
+            <h3>Issued Equipment</h3>
+            <table id="issuedEquipmentTable">
+                <tr>
+                    <th>Equipment</th>
+                    <th>Return</th>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Returned Equipment History</h3>
+        <table id="returnedEquipmentTable">
+            <tr>
+                <th>Equipment</th>
+                <th>Student Name</th>
+                <th>Registration No</th>
+                <th>Faculty Name</th>
+                <th>Return Date & Time</th>
+            </tr>
+        </table>
+    </div>
+    
+    <script>
+        let students = {
+            "231FA04672": { name: "Pathuri Sai Chandh ", branch: "Computer Science", year: "2nd", section: "2k" }
+        };
+        
+        let faculty = {
+            "001": { name: "Dr.Sk.Sikindar", password: "p123" }
+        };
+
+        function verifyStudent() {
+            let regNo = document.getElementById("regInput").value;
+            let issuedEquipment = JSON.parse(localStorage.getItem("issuedEquipment_" + regNo)) || [];
+
+            if (students[regNo]) {
+                document.getElementById("regNo").innerText = regNo;
+                document.getElementById("studentName").innerText = students[regNo].name;
+                document.getElementById("branch").innerText = students[regNo].branch;
+                document.getElementById("year").innerText = students[regNo].year;
+                document.getElementById("section").innerText = students[regNo].section;
+                document.getElementById("issuedItems").innerText = issuedEquipment.length ? issuedEquipment.join(", ") : "None";
+                document.getElementById("studentDetails").style.display = "block";
+                document.getElementById("facultyAuth").style.display = "block";
+            } else {
+                alert("Student not found!");
+            }
+        }
+
+        function verifyFaculty() {
+            let facultyId = document.getElementById("facultyIdInput").value;
+            let password = document.getElementById("facultyPassInput").value;
+            
+            if (faculty[facultyId] && faculty[facultyId].password === password) {
+                document.getElementById("facultyId").innerText = facultyId;
+                document.getElementById("facultyName").innerText = faculty[facultyId].name;
+                document.getElementById("facultyDetails").style.display = "block";
+                loadIssuedEquipment();
+            } else {
+                alert("Invalid Faculty ID or Password!");
+            }
+        }
+
+        function loadIssuedEquipment() {
+            let regNo = document.getElementById("regNo").innerText;
+            let table = document.getElementById("issuedEquipmentTable");
+            let issuedEquipment = JSON.parse(localStorage.getItem("issuedEquipment_" + regNo)) || [];
+
+            table.innerHTML = `<tr>
+                <th>Equipment</th>
+                <th>Return</th>
+            </tr>`;
+
+            issuedEquipment.forEach((item, index) => {
+                let row = table.insertRow(-1);
+                row.insertCell(0).innerText = item;
+                let btnCell = row.insertCell(1);
+                let button = document.createElement("button");
+                button.innerText = "Return";
+                button.classList.add("return-btn");
+                button.onclick = () => returnEquipment(index, item, row, regNo);
+                btnCell.appendChild(button);
+            });
+
+            document.getElementById("issuedEquipmentSection").style.display = "block";
+        }
+
+        function returnEquipment(index, equipmentName, row, regNo) {
+            row.remove();
+
+            let returnedTable = document.getElementById("returnedEquipmentTable");
+            let newRow = returnedTable.insertRow(-1);
+            newRow.insertCell(0).innerText = equipmentName;
+            newRow.insertCell(1).innerText = document.getElementById("studentName").innerText;
+            newRow.insertCell(2).innerText = regNo;
+            newRow.insertCell(3).innerText = document.getElementById("facultyName").innerText;
+            newRow.insertCell(4).innerText = new Date().toLocaleString();
+        }
+    </script>
+     <div class="footer">
+        &copy; All Rights reserved by Vignan university
+    </div>
+</body>
+</html>
