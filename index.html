@@ -115,6 +115,31 @@
             transform: scale(1.1);
         }
 
+        /* SCROLLING TEXT */
+        .scroll-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            background: black;
+            padding: 15px 0;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+        }
+        .scroll-text {
+            display: inline-block;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffeb3b;
+            animation: marquee 10s linear infinite;
+        }
+        @keyframes marquee {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+
         /* PAGE CONTENT */
         .container {
             margin-top: 180px;
@@ -129,22 +154,18 @@
             font-weight: bold;
             text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
         }
-
     </style>
 </head>
 <body>
     <div class="navbar">
-        <img src="https://files.oaiusercontent.com/file-J9tieZHy1JYv48wyWYKxz6?se=2025-03-22T04%3A22%3A55Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D299%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3Dimage.png&sig=T%2BC3jbutFwOl5VnTs3tyF668aByDdfFeh0gRmK3paIU%3D" 
+        <img src="https://i.ytimg.com/vi/SNrhVkmEPE8/maxresdefault.jpg" 
             alt="Sports Logo" class="logo">
         <div class="navbar-links">
-            <a href="index.html">Dashboard</a>
             <a href="Home.html">Home</a>
             <a href="STUDENT_FORM.html">Student</a>
             <a href="EQUIPMENT.html">Equipment</a>
             <a href="Fac.html">Faculty</a>
             <a href="return_page.html">Return</a>
-            
-            <!-- Settings Dropdown -->
             <div class="settings-dropdown">
                 <a href="#" class="settings-button">Settings ▼</a>
                 <div class="settings-dropdown-content">
@@ -154,7 +175,9 @@
             </div>
         </div>
     </div>
-
+    <div class="scroll-container">
+        <div class="scroll-text">🔥 Latest Updates: New Sports Equipment Available | Upcoming Tournaments | Enhanced Booking Features | Stay Tuned for Exciting Events! 🔥</div>
+    </div>
     <div class="container">
         <h1>VIGNAN'S UNIVERSITY SPORTS EQUIPMENT MANAGEMENT SYSTEM</h1>
     </div>
