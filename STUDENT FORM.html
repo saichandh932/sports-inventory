@@ -37,6 +37,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 50%;
             margin-top: 30px;
+            text-align: center;
         }
         label {
             font-weight: bold;
@@ -57,12 +58,117 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            display: none;
             margin-top: 15px;
         }
         .next-btn:hover {
             background-color: #01579b;
         }
+
+        /* Scanner Frame Styles */
+        .scanner-container {
+            width: 80%;
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        video {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .scan-btn, .stop-btn {
+            background-color: #d32f2f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .scan-btn:hover {
+            background-color: #b71c1c;
+        }
+        .stop-btn:hover {
+            background-color: #880e4f;
+        }
+        /* Scanner Frame Styles */
+.scanner-container {
+    width: 80%;
+    margin-top: 30px;
+    background: linear-gradient(135deg, #0277bd, #81d4fa);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+    color: white;
+}
+
+/* Video Frame */
+video {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 15px;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 15px;
+}
+
+/* Scan & Stop Buttons */
+.scan-btn, .stop-btn {
+    background: linear-gradient(135deg, #0288d1, #01579b);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-right: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.scan-btn:hover {
+    background: linear-gradient(135deg, #01579b, #0288d1);
+    transform: scale(1.05);
+}
+
+.stop-btn {
+    background: linear-gradient(135deg, #d32f2f, #b71c1c);
+}
+
+.stop-btn:hover {
+    background: linear-gradient(135deg, #b71c1c, #d32f2f);
+    transform: scale(1.05);
+}
+
+/* Animated Borders */
+.scanner-container::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: -1;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
     </style>
 </head>
 <body>
@@ -93,7 +199,16 @@
         
         <button class="next-btn" id="nextBtn" onclick="goToNextPage()">Next</button>
     </div>
-    
+
+    <!-- SCANNER FRAME (Bottom of the Page) -->
+    <div class="scanner-container">
+        <h2>Scan your 🆔 here</h2>
+        <video id="scanner" autoplay playsinline></video>
+        <br>
+        <button class="scan-btn" onclick="startScanner()">Scan</button>
+        <button class="stop-btn" onclick="stopScanner()">Stop</button>
+    </div>
+
     <script>
         function fetchStudentDetails() {
             let regNo = document.getElementById("regNo").value;
@@ -115,9 +230,28 @@
                 nextBtn.style.display = "none";
             }
         }
-        
+
         function goToNextPage() {
             window.location.href = "EQUIPMENT.HTML";
+        }
+
+        // CAMERA SCAN FUNCTIONS
+        let scannerStream;
+
+        function startScanner() {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+            .then(stream => {
+                scannerStream = stream;
+                document.getElementById("scanner").srcObject = stream;
+            })
+            .catch(err => console.error("Camera access denied!", err));
+        }
+
+        function stopScanner() {
+            if (scannerStream) {
+                scannerStream.getTracks().forEach(track => track.stop());
+                document.getElementById("scanner").srcObject = null;
+            }
         }
     </script>
 </body>
