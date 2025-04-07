@@ -14,6 +14,7 @@
             flex-direction: column;
             align-items: center;
         }
+
         .navbar {
             width: 100%;
             background-color: #0277bd;
@@ -21,15 +22,18 @@
             padding: 10px 0;
             text-align: center;
         }
+
         .navbar a {
             color: white;
             padding: 14px 20px;
             text-decoration: none;
             font-size: 18px;
         }
+
         .navbar a:hover {
             background-color: #01579b;
         }
+
         .container {
             background: white;
             padding: 20px;
@@ -39,11 +43,13 @@
             margin-top: 30px;
             text-align: center;
         }
+
         label {
             font-weight: bold;
             display: block;
             margin-top: 10px;
         }
+
         input {
             width: 100%;
             padding: 8px;
@@ -51,6 +57,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
         .next-btn {
             background-color: #0277bd;
             color: white;
@@ -58,120 +65,90 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 20px;
+            font-size: 18px;
         }
+
         .next-btn:hover {
             background-color: #01579b;
         }
 
-        /* Scanner Frame Styles */
+        /* Scanner Section */
         .scanner-container {
             width: 80%;
             margin-top: 30px;
-            background: white;
+            background: linear-gradient(135deg, #0277bd, #81d4fa);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
             text-align: center;
+            animation: fadeIn 1s ease-in-out;
+            color: white;
+            position: relative;
         }
+
         video {
             width: 100%;
-            border-radius: 10px;
+            max-width: 500px;
+            border-radius: 15px;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
         }
+
         .scan-btn, .stop-btn {
-            background-color: #d32f2f;
+            background: linear-gradient(135deg, #0288d1, #01579b);
             color: white;
-            padding: 10px 15px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             margin-top: 10px;
+            margin-right: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
         .scan-btn:hover {
-            background-color: #b71c1c;
+            background: linear-gradient(135deg, #01579b, #0288d1);
+            transform: scale(1.05);
         }
+
+        .stop-btn {
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+        }
+
         .stop-btn:hover {
-            background-color: #880e4f;
+            background: linear-gradient(135deg, #b71c1c, #d32f2f);
+            transform: scale(1.05);
         }
-        /* Scanner Frame Styles */
-.scanner-container {
-    width: 80%;
-    margin-top: 30px;
-    background: linear-gradient(135deg, #0277bd, #81d4fa);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    animation: fadeIn 1s ease-in-out;
-    color: white;
-}
 
-/* Video Frame */
-video {
-    width: 100%;
-    max-width: 500px;
-    border-radius: 15px;
-    border: 3px solid #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 15px;
-}
+        .scanner-container::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: -1;
+        }
 
-/* Scan & Stop Buttons */
-.scan-btn, .stop-btn {
-    background: linear-gradient(135deg, #0288d1, #01579b);
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-    margin-right: 5px;
-    font-size: 18px;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.scan-btn:hover {
-    background: linear-gradient(135deg, #01579b, #0288d1);
-    transform: scale(1.05);
-}
-
-.stop-btn {
-    background: linear-gradient(135deg, #d32f2f, #b71c1c);
-}
-
-.stop-btn:hover {
-    background: linear-gradient(135deg, #b71c1c, #d32f2f);
-    transform: scale(1.05);
-}
-
-/* Animated Borders */
-.scanner-container::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: -1;
-}
-
-/* Fade-in Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
+
     <div class="navbar">
         <a href="index.html">Dash board</a>
         <a href="Home.html">Home</a>
@@ -180,12 +157,12 @@ video {
         <a href="Fac.html">Faculty Page</a>
         <a href="return page.html">Return Equipment Page</a>
     </div>
-    
+
     <div class="container">
         <h2>Student Registration</h2>
         <label for="regNo">Registration Number:</label>
         <input type="text" id="regNo" placeholder="Enter your registration number" oninput="fetchStudentDetails()">
-        
+
         <div id="studentDetails" style="display: none;">
             <label>Name:</label>
             <input type="text" id="name" readonly>
@@ -196,11 +173,9 @@ video {
             <label>Section:</label>
             <input type="text" id="section" readonly>
         </div>
-        
-        <button class="next-btn" id="nextBtn" onclick="goToNextPage()">Next</button>
     </div>
 
-    <!-- SCANNER FRAME (Bottom of the Page) -->
+    <!-- SCANNER FRAME -->
     <div class="scanner-container">
         <h2>Scan your 🆔 here</h2>
         <video id="scanner" autoplay playsinline></video>
@@ -209,21 +184,29 @@ video {
         <button class="stop-btn" onclick="stopScanner()">Stop</button>
     </div>
 
+    <!-- NEXT BUTTON MOVED TO BOTTOM -->
+    <div style="margin-bottom: 40px;">
+        <button class="next-btn" id="nextBtn" onclick="goToNextPage()" style="display: none;">Next</button>
+    </div>
+
     <script>
         function fetchStudentDetails() {
-            let regNo = document.getElementById("regNo").value;
+            let regNo = document.getElementById("regNo").value.trim();
+            const regPattern = /^[0-9A-Z]{10}$/;
+
             let detailsDiv = document.getElementById("studentDetails");
             let nextBtn = document.getElementById("nextBtn");
-            
-            if (regNo.length >= 10) { // Simulating a condition to fetch data
+
+            if (regPattern.test(regNo)) {
                 document.getElementById("name").value = "Pathuri Sai Chandh";
                 document.getElementById("branch").value = "Computer Science";
                 document.getElementById("year").value = "2nd";
                 document.getElementById("section").value = "2k";
-                
+
                 detailsDiv.style.display = "block";
-                nextBtn.style.display = "block";
-                localStorage.setItem("studentID","231FA04672");
+                nextBtn.style.display = "inline-block";
+
+                localStorage.setItem("studentID", "231FA04672");
                 localStorage.setItem("studentName", "Pathuri Sai Chandh");
             } else {
                 detailsDiv.style.display = "none";
@@ -235,16 +218,15 @@ video {
             window.location.href = "EQUIPMENT.HTML";
         }
 
-        // CAMERA SCAN FUNCTIONS
         let scannerStream;
 
         function startScanner() {
             navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-            .then(stream => {
-                scannerStream = stream;
-                document.getElementById("scanner").srcObject = stream;
-            })
-            .catch(err => console.error("Camera access denied!", err));
+                .then(stream => {
+                    scannerStream = stream;
+                    document.getElementById("scanner").srcObject = stream;
+                })
+                .catch(err => console.error("Camera access denied!", err));
         }
 
         function stopScanner() {
